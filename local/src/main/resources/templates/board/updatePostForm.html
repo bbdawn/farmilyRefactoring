@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment="main" >
+	<br>
+	<br>
+	<br>
+	<br>
+	<form method="post" th:action="@{/updatePost}" enctype="multipart/form-data">
+		<span th:name="boardCategori" th:text="${boardVO.boardCategori}"></span>
+		<table class="table">
+			
+			<tr>
+
+				<td th:if="${param.boardCategori=='농촌활동'}"><input type="text"
+					name="region" placeholder="지역" required="required" size="50">
+				</td>
+				<td th:unless="${param.boardCategori=='장터'}">
+				<input type="hidden" name="region" value="">
+				<input type="hidden" name="detailRegion" value="">
+				</td>
+			</tr>
+			<tr>
+				<td><input type="text" name="title" 
+					required="required" size="100" th:value="${boardVO.title}"></td>
+			</tr>
+			<tr>
+				<td><img th:src="@{${boardVO.filepath}}" /></td>
+			</tr>
+			<tr>
+				<td><textarea rows="10" class="form-control" name="content"
+						placeholder="본문내용" required="required" th:text="${boardVO.content}"  >{boardVO.content}</textarea></td>
+			</tr>
+
+		</table>
+	
+		<div class="text-center">
+			<input type="hidden" name="boardCategori"
+				value="${param.boardCategori}" th:value="${param.boardCategori}">
+			<input type="hidden" name="boardNo" th:value="${boardVO.boardNo}">
+			
+			<br>
+			<button type="submit" class="btn btn-success">확인</button>
+			<button type="button" class="btn btn-light"  th:onclick="|location.href='@{/guest/findAllBoardList}'|">취소</button>
+		</div>
+	</form>
+
+
+</div>
+</html>

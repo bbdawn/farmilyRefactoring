@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.myproject.mapper.BoardMapper">
+	<sql id="selectBoard">
+ 		select board_no,title,content,select_categori,board_categori,region,created_date,id,detail_region,hit from farmily_board
+ 	</sql>
+ 	
+	<insert id="registerBoardBoard" parameterType="org.kosta.myproject.vo.BoardVO">
+		insert into farmily_board(board_no,title,content,select_categori,board_categori,region,created_date,id,filename,filepath,detail_region)
+		values (seq_farmily_board.nextval,#{title},#{content},#{selectCategori},#{boardCategori},#{region},sysdate,#{id},#{filename},#{filepath},#{detailRegion})
+	</insert>
+	
+	<select id="getTotalPostCount" resultType="int">
+		SELECT COUNT(*) FROM farmily_board
+	</select>
+	
+	<select id="findAllBoardList" parameterType="org.kosta.myproject.vo.Pagination" resultType="org.kosta.myproject.vo.BoardVO">
+		select rnum, board_no,title,content,select_categori,board_categori,region,created_date,id,detail_region,hit
+		from(select row_number() over(order by board_no desc) as rnum, board_no,title,content,select_categori,board_categori,region,created_date,id,detail_region,hit 
+		from farmily_board)
+		where rnum between #{startRowNumber} and #{endRowNumber}	
+	</select>
+	
+	<select id="findBoardListByRegion" parameterType="String" resultType="org.kosta.myproject.vo.BoardVO">
+		<include refid="selectBoard"/> where region = #{value} order by board_no desc
+	</select>
+	<select id="findBoardListByBoardCategori" parameterType="String" resultType="org.kosta.myproject.vo.BoardVO">
+		<include refid="selectBoard"/> where board_categori = #{value} order by board_no desc
+	</select>
+	<select id="findBoardListBySelectCategori" parameterType="String" resultType="org.kosta.myproject.vo.BoardVO">
+		<include refid="selectBoard"/> where select_categori = #{value} order by board_no desc
+	</select>
+	<select id="findBoardFarmingListByBoardCategori" parameterType="String" resultType="org.kosta.myproject.vo.BoardVO">
+		<include refid="selectBoard"/> where board_categori = '농촌활동' order by board_no desc
+	</select>
+	<delete id="deletePost" parameterType="string">
+ 		delete from farmily_board where board_no=#{board_no}
+ 	</delete>
+	<update id="updateBoardBoard" parameterType="org.kosta.myproject.vo.BoardVO">
+		update farmily_board set title=#{title}, content=#{content}
+ 		where board_no=#{boardNo}
+	</update>
+	<select id="findMyPostListById" parameterType="String" resultType="org.kosta.myproject.vo.BoardVO">
+		<include refid="selectBoard"/> where id=#{id} order by board_no desc
+	</select>	
+	<select id="findMyJjimListById" parameterType="String" resultType="org.kosta.myproject.vo.BoardVO">
+		select b.board_no,b.title,b.content,b.select_categori,b.board_categori,b.region,b.created_date,b.id,j.board_no,j.id
+		from farmily_jjim j
+		inner join farmily_board b on j.board_no=b.board_no
+		where j.id=#{id} order by b.board_no desc
+	</select>
+	<select id="boardView" parameterType="String" resultType="org.kosta.myproject.vo.BoardVO">
+		select board_no,title,content,select_categori,board_categori,region,created_date,id, filename, filepath ,detail_region, hit
+		from farmily_board 
+		where board_no=#{value}
+	</select>
+	<insert id="registerJjim" parameterType="org.kosta.myproject.vo.JjimVO">
+		insert into farmily_jjim(board_no,id) values(#{boardNo},#{id})
+	</insert>
+	<delete id="deleteJjim" parameterType="org.kosta.myproject.vo.JjimVO">
+		delete from farmily_jjim where board_no=#{boardNo} and id=#{id}
+	</delete>
+	<select id="findJjim" parameterType="org.kosta.myproject.vo.JjimVO" resultType="String">
+		select count(*) from farmily_jjim where id=#{id} and board_no = #{boardNo}
+	</select>
+	<update id="updateCount" parameterType="String">
+		update farmily_board set hit=hit+1 where board_no=#{board_no}
+	</update>
+</mapper>

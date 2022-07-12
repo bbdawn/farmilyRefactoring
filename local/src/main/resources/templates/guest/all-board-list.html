@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+
+
+
+<div layout:fragment="main" >
+	<br>
+	<br>
+	<br>
+	<br>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>글번호</th>
+				<th>농촌활동/장터</th>
+				<th>카테고리</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
+				<th>조회수</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr th:each="board:${boardList}">
+				<td th:text="${board.boardNo}">글번호</td>
+				<td th:text="${board.boardCategori}">농촌활동/장터</td>
+				<td th:text="${board.selectCategori}">카테고리</td>
+				<td><a th:text="${board.title}"
+					th:href="@{/boardView(boardNo=${board.boardNo})}"></a></td>
+				<td th:text="${board.id}">작성자</td>
+				<td th:text="${board.createdDate}">작성일</td>
+				<td th:text="${board.hit}">조회수</td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	
+	
+	    	<ul class="pagination">
+	          <th:block th:if ="${pagination.previousPageGroup}">
+	    		 <li class="page-item" >
+	    		 		<a class="page-link" th:href="@{/guest/findAllBoardList(pageNo=${pagination.startPageOfPageGroup-1})}" th:text="|이전글보기|">Previous</a>
+	    		 </li> 
+	     	 </th:block>
+	    
+	 		 <th:block th:each="pageNo:${#numbers.sequence(pagination.startPageOfPageGroup,pagination.endPageOfPageGroup)}">
+			 		<th:block th:if="${pageNo==pagination.nowPage}">
+			 			<li class="page-item active">
+			 				<a class="page-link" th:href="@{/guest/findAllBoardList(pageNo=${pageNo})}" th:text="${pageNo}"></a>
+			 			</li>
+			    	</th:block>
+			    	
+			    	<th:block th:if="${pageNo!=pagination.nowPage}">
+			    		 <li class="page-item">
+			    		 	<a class="page-link" th:href="@{/guest/findAllBoardList(pageNo=${pageNo})}" th:text="${pageNo}"></a>
+			    		 </li>
+			    	</th:block>
+	   		</th:block>
+	    
+	     	 <th:block th:if ="${pagination.nextPageGroup}">
+	    			 <li class="page-item" >
+	    			 		<a class="page-link" th:href="@{/guest/findAllBoardList(pageNo=${pagination.endPageOfPageGroup+1})}" th:text="|다음글보기|"></a>
+	    			 </li> 
+	      	</th:block>
+	    </ul>
+	    <div class="pagination-box">
+    </div>
+	
+</div>
+</html>

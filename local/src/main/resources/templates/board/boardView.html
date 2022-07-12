@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div layout:fragment="main" >
+<br><br><br><br>
+	<form method="get" enctype="multipart/form-data">
+		<span th:name="boardCategori" th:text="${param.boardCategori}"></span>
+		<table class="table">
+			
+			<tr>
+
+				<td th:if="${param.boardCategori=='농촌활동'}"><input type="text"
+					name="region" placeholder="지역" required="required" size="50">
+				</td>
+				<td th:unless="${param.boardCategori=='장터'}"><input
+					type="hidden" name="region" value=""></td>
+			</tr>
+			<tr>
+				<td><h6 th:text="| ${boardVO.boardCategori} / ${boardVO.selectCategori} |"></h6></td>
+			</tr>
+			<tr>
+				<td><h1 th:text="${boardVO.title}"></h1></td>
+			</tr>
+			<tr>
+				<td align="right"><h6 th:text="|작성자 : ${boardVO.id}|"></h6><h6 th:text="|작성일 : ${boardVO.createdDate}|"></h6></td>
+			</tr>
+			
+			
+			<tr>
+				<td><img style="max-width: 850px" th:src="@{${boardVO.filepath}}" /></td>
+			</tr>
+			<tr>
+				<td><textarea rows="10" class="form-control" name="content"
+						placeholder="본문내용" required="required" readonly="readonly" th:text="${boardVO.content}" ></textarea></td>
+			</tr>
+			<tr align="left">
+				<td id="jjimImg">
+					<img height="100" id="jjim" src="" />
+					
+				
+				</td>
+			</tr>
+			
+		</table>
+		<!--
+		<div style='width:30px;float: left;'>
+		 <button type="button" id="jjimForm"><img src="assets/img/planting.png" alt="" border='0' style="float: left; width:40px; height:40px;"></button> 
+		</div>
+		<a href="#" th:href="@{board/boardView}" id="Jjim"><img src="assets/img/planting.png" alt="" border='0' style="float: left; width:40px; height:40px;"></a>-->
+		
+		
+		<div class="text-center">
+			<input type="hidden" name="boardCategori"
+				value="${param.boardCategori}" th:value="${param.boardCategori}">
+			
+			<br><br>
+			<div th:if = "${boardVO.id} == ${myId}">
+				<button type="button" class="btn btn-success" sec:authorize="isAuthenticated()==true" th:onclick="|location.href='@{/updatePostForm(boardNo=${boardVO.boardNo})}'|">수정하기</button>
+				<button type="button" class="btn btn-light" sec:authorize="isAuthenticated()==true" th:onclick="|location.href='@{/deletePost(boardNo=${boardVO.boardNo})}'|">삭제하기</button>
+			</div>
+		</div>	
+	</form>
+
+
+	
+<script type="text/javascript">
+$(function() {
+	let jjimCheck = [[${jjimCheck}]];
+	
+	if(jjimCheck=="1") {
+        $("#jjim").prop("src", "assets/img/planting2.png");
+    }else {
+        $("#jjim").prop("src", "assets/img/planting.png");
+    }
+	
+	var $j = jQuery.noConflict();
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+	$("#jjim").on("click", function() {
+		
+		$.ajax({
+			type : "get",
+			url : "/changeJjim?jjimCheck="+jjimCheck+"&boardNo="+[[${boardVO.boardNo}]],
+			beforeSend : function(xhr)
+            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				xhr.setRequestHeader(header, token);
+            },
+			success : function(result){
+				 if (result == 1) {
+					 $("#jjim").prop("src", "assets/img/planting2.png");
+					 jjimCheck = 1;
+					 
+					
+                 } else {
+                	 $("#jjim").prop("src", "assets/img/planting.png");
+                	 jjimCheck = 0;
+                	 
+                 }
+			}
+		});//ajax
+	});//click
+});
+</script>	
+</div>
+</html>
+
