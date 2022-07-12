@@ -85,6 +85,7 @@ public class BoardController {
 		return "board/board-categori-list";
 	}
 	
+	//region list ajax 89-95
 	@RequestMapping("guest/ajaxBoardListByRegion")
 	@ResponseBody
 	public List<BoardVO> ajaxBoardListByRegion(String region, Model model) {
