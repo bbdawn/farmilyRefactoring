@@ -51,6 +51,13 @@ public interface BoardService {
 	// 조회수 업데이트
 	void updateCount(String boardNo);
 
+	// 검색기능 (searchOption - 제목,내용,작성자) 20220713 추가 
+	List<BoardVO> findSearchBoardList(String searchOption, String searchContent);
 	
+	//농촌활동 게시물 업데이트 20220713 추가 
+	void updateFarmPost(BoardVO boardVO);
+	
+	//농촌활동 게시물 삭제 20220713 추가
+	void deleteFarmPost(String BoardNo);
 	
 }

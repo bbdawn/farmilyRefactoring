@@ -40,6 +40,10 @@ public class ReserveServiceImpl implements ReserveService{
 	public List<BoardVO> findReservationBoardNoDistinct(String id) {
 		return reserveMapper.findReservationBoardNoDistinct(id);
 	}
+	@Override
+	public int checkReservationByBoardNo(String boardNo) {
+		return reserveMapper.checkReservationByBoardNo(boardNo);
+	}
 	
 	
 	

@@ -9,22 +9,56 @@
 	<br>
 	<br>
 	<br>
-	<form method="get" enctype="multipart/form-data">
+	<form method="post" enctype="multipart/form-data" th:action="updateFarmPost">
 		<span th:name="boardCategori" th:text="${param.boardCategori}"></span>
 		
 		<table class="table">
+			
 			<tr>
-				<td><h1 th:text="${boardVO.title}"></h1></td>
+				<td align="left">
+					<span th:text="농촌활동지역"></span> &nbsp 
+					<select name="region" id="memberRegion" style="width: 100px" required="required">
+						<option value="">-- 지역 --</option>
+						<option value="서울">서울</option>
+						<option value="경기">경기</option>
+						<option value="강원">강원</option>
+						<option value="인천">인천</option>
+						<option value="대전">대전</option>
+						<option value="대구">대구</option>
+						<option value="울산">울산</option>
+						<option value="부산">부산</option>
+						<option value="광주">광주</option>
+						<option value="충남">충남</option>
+						<option value="충북">충북</option>
+						<option value="전남">전남</option>
+						<option value="전북">전북</option>
+						<option value="경남">경남</option>
+						<option value="경북">경북</option>
+						<option value="제주">제주</option>
+				</select>
+				<br>
+				<span th:text="농촌활동주소"></span> &nbsp
+				<input type="text" name="detailRegion" placeholder="주소" required="required" size="87" style="margin-top: 3px" th:value="${boardVO.detailRegion}"> 
+				
+				</td>
+			</tr>
+			<tr align="left">
+				<td>
+				<select name="selectCategori" required="required" style="height: 30px">
+					<option value="">-- 카테고리 --</option>
+					<option value="일일알바" >일일알바</option>
+					<option value="체험활동" >체험활동</option>
+				</select>
+				<input type="text" name="title" placeholder="글제목"required="required" size="85" th:value="${boardVO.title}">
+				</td>
 			</tr>
 			<tr align="left">
 				<td style="font-size: 20px">
-				<span style="font-weight: bold; "> 지역 : </span> <span th:text="${boardVO.region}"></span> <br>
-				<span style="font-weight: bold; "> 주소 : </span> <span th:text="${boardVO.detailRegion}"></span> <br>
-				<span style="font-weight: bold; "> 활동내용 : </span><span th:text="${boardVO.selectCategori}"></span><br>
+				
 				<span style="font-weight: bold; "> 예약가능날짜 : </span>
 				<th:block th:each="rdate:${rdateList}">
-						<span th:text="${rdate.reservationDate}"></span><br>
-						<span style="margin-left: 133px"></span>
+						<span th:text="| ${rdate.reservationDate} / |"></span>
+						
 					</th:block>
 				</td>
 			</tr>
@@ -34,7 +68,7 @@
 			</tr>
 			<tr>
 				<td><textarea rows="10" class="form-control" name="content"
-						placeholder="본문내용" required="required" th:text="${boardVO.content}" readonly="readonly"></textarea></td>
+						placeholder="본문내용" required="required" th:text="${boardVO.content}" ></textarea></td>
 			</tr>
 			<tr align="left">
 				<td id="jjimImg">
@@ -48,14 +82,9 @@
 		<div class="text-center">
 			<input type="hidden" name="boardCategori"
 				value="${param.boardCategori}" th:value="${param.boardCategori}">
-			<div th:if = "${boardVO.id} != ${myId}">
-			<button id="reserveBtn" type="button" class="btn btn-outline-dark" sec:authorize="isAuthenticated()==true" >예약하기</button>
-			</div>
-			<br><br>
-			<div th:if = "${boardVO.id} == ${myId}">
-			<button type="button" class="btn btn-success" sec:authorize="isAuthenticated()==true" th:onclick="|location.href='@{/updateFarmPostForm(boardNo=${boardVO.boardNo})}'|">수정하기</button>
-			<button type="button" class="btn btn-light" id="deletePostBtn" sec:authorize="isAuthenticated()==true" >삭제하기</button>
-			</div>
+			<input type="hidden" name="boardNo" value="${boardVO.boardNo}" th:value="${boardVO.boardNo}">
+			<button type="submit" class="btn btn-success">확인</button>
+			<button type="button" class="btn btn-light"  th:onclick="|location.href='@{/boardView(boardNo=${boardVO.boardNo})}'|">취소</button>
 			
 		</div>
 	</form>
@@ -96,7 +125,6 @@ $(function() {
 		});//ajax
 	});//click
 	
-	//예약하기 버튼 클릭시 예약 가능한 날짜가 없는 경우
 	$("#reserveBtn").click(function() {
 		let listSize = [[${rdateListSize}]];
 		let boardNo = [[${boardVO.boardNo}]];
@@ -104,18 +132,6 @@ $(function() {
 			alert("이 활동은 예약이 모두 완료되었습니다");
 		}else{
 			location.href='reservationForm?boardNo='+boardNo;
-		}
-	});
-	
-	//삭제하기 버튼 클릭시 예약이 있으면 삭제 불가능 없으면 게시물 삭제 가능
-	$("#deletePostBtn").click(function() {
-		let count = [[${checkCount}]];
-		let boardNo = [[${boardVO.boardNo}]];
-		if(count>0){
-			alert("활동에 대한 예약이 존재해 게시물을 삭제할 수 없습니다.");
-		}else{
-			alert("삭제되었습니다");
-			location.href="/deleteFarmPost?boardNo="+boardNo;
 		}
 	});
 	

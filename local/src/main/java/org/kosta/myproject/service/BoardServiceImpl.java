@@ -94,4 +94,16 @@ public class BoardServiceImpl implements BoardService{
 	public void updateCount(String boardNo) {
 		boardMapper.updateCount(boardNo);
 	}
+	@Override
+	public List<BoardVO> findSearchBoardList(String searchOption, String searchContent) {
+		return boardMapper.findSearchBoardList(searchOption, searchContent);
+	}
+	@Override
+	public void updateFarmPost(BoardVO boardVO) {
+		boardMapper.updateFarmPost(boardVO);
+	}
+	@Override
+	public void deleteFarmPost(String BoardNo) {
+		boardMapper.deleteFarmPost(BoardNo);
+	}
 }

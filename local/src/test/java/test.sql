@@ -118,6 +118,7 @@ commit
 commit commit
 select * from farmily_board
 select * from farmily_member
+select * from farmily_reservation;
 
 create sequence seq_farmily_board;
 create sequence seq_farmily_file;
@@ -133,4 +134,23 @@ ALTER TABLE farmily_board ADD detail_region VARCHAR2(200);
 -- 승인하는 관리자 insert (id명 master로 회원가입 먼저 하기)
 insert into farmily_authorities(username,authority) values('master1','ROLE_MASTER');
 
+select * from  farmily_authorities
 
+select board_no,title,content,select_categori,board_categori,region,created_date,id,detail_region,hit 
+from farmily_board 
+where content like '%a%'
+
+select count(*) from farmily_reservation where board_no = 131 and id is not null
+
+delete from farmily_board where board_no = 132;
+
+delete from farmily_reservation where board_no = 89;
+
+-- delete 위해 cascade 옵션 추가
+alter table farmily_jjim drop CONSTRAINT fk_jjim_board_no;
+ALTER TABLE farmily_jjim
+add CONSTRAINT fk_jjim_board_no foreign key(board_no) references farmily_board(board_no) ON DELETE CASCADE;
+
+alter table farmily_reservation drop CONSTRAINT fk_reservation_board_no;
+ALTER TABLE farmily_reservation
+add CONSTRAINT fk_reservation_board_no foreign key(board_no) references farmily_board(board_no) ON DELETE CASCADE;

@@ -7,7 +7,14 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+$(function() {
+	
+	$( "#available1" ).datepicker({ minDate: 0});
+	
+});
 
+</script>
 <div layout:fragment="main" >
 <script type="text/javascript" th:inline="javascript" >
 let plusId = 1;
@@ -22,6 +29,8 @@ $(function() {
 	let dateArray = new Set();
 	let divId = "divId";
 	let btnClickCheck = 0;
+	
+	
 	// 플러스 버튼 클릭시 input tag 추가
 	$("#plusBtn1").click(function(){
 	     

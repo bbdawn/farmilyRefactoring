@@ -12,8 +12,8 @@ public class FinalprojectFarmilyApplication {
 		SpringApplication.run(FinalprojectFarmilyApplication.class, args);
 	}
 	
-	@Bean
-	public ServerEndpointExporter serverEndpointExporter() {
-		return new ServerEndpointExporter();
-	}
+	//@Bean
+	//public ServerEndpointExporter serverEndpointExporter() {
+	//	return new ServerEndpointExporter();
+	//}
 }

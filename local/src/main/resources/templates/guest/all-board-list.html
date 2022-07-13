@@ -8,7 +8,7 @@
 
 
 
-<div layout:fragment="main" >
+<div layout:fragment="main" style="height: 700px;">
 	<br>
 	<br>
 	<br>
@@ -71,6 +71,17 @@
 	    </ul>
 	    <div class="pagination-box">
     </div>
-	
+    <br>
+    <form th:action="@{/guest/findSearchBoardList}" method="get">
+	<div align="center">
+		<select name="searchOption" id="searchOption" style="height: 31px">
+			<option value="title">제목</option>
+			<option value="content">내용</option>
+			<option value="id">작성자</option>
+		</select>
+		<input name="searchContent" style="width: 400px">
+		<button type="submit" style="width: 70px">검색</button>
+	</div>
+	</form>
 </div>
 </html>

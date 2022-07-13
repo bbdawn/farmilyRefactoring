@@ -93,6 +93,14 @@ public class BoardController {
 		model.addAttribute("boardList", list);
 		return boardService.findBoardListByRegion(region);
 	}
+	
+	//findSearchBoardList
+	@GetMapping("guest/findSearchBoardList")
+	public String findSearchBoardList(String searchOption,String searchContent,Model model) {
+		List<BoardVO> list = boardService.findSearchBoardList(searchOption, searchContent);
+		model.addAttribute("boardList", list);
+		return "board/board-categori-list";
+	}
 
 	@GetMapping("registerPostForm")
 	public String registerPostForm(String boardCategori) {
@@ -165,8 +173,10 @@ public class BoardController {
 			//예약 가능 날짜 불러와서 보내주기
 			List<ReservationVO> rdateList = reserveService.findReservateDate(boardNo);
 			int rdateListSize = rdateList.size();
+			int checkCount = reserveService.checkReservationByBoardNo(boardNo);
 			model.addAttribute("rdateList",rdateList);
 			model.addAttribute("rdateListSize",rdateListSize);
+			model.addAttribute("checkCount",checkCount);
 			viewName = "board/boardFarmView";
 		}
 		model.addAttribute("boardVO", boardVO);
@@ -202,6 +212,19 @@ public class BoardController {
 		return "board/updatePostForm";
 	}
 	
+	//20220713 추가 농촌활동 게시물 수정
+	@GetMapping("updateFarmPostForm")
+	public String updateFarmPostForm( String boardNo, Model model) {
+		BoardVO boardVO = boardService.boardView(boardNo);
+		//예약 가능 날짜 불러와서 보내주기
+		List<ReservationVO> rdateList = reserveService.findReservateDate(boardNo);
+		int rdateListSize = rdateList.size();
+		model.addAttribute("rdateList",rdateList);
+		model.addAttribute("rdateListSize",rdateListSize);
+		model.addAttribute("boardVO", boardVO);
+		return "board/updateFarmPostForm";
+	}
+	
 	@PostMapping("updatePost")
 	public String updatePost(@AuthenticationPrincipal MemberVO membervo, BoardVO boardVO, String boardCategori,
 			Model model, MultipartFile file, int boardNo, RedirectAttributes redirect) throws Exception {
@@ -214,6 +237,16 @@ public class BoardController {
 		return "update-message";
 		
 	}
+	
+	//20220713 추가 농촌활동 게시물 수정
+	@PostMapping("updateFarmPost")
+	public String updateFarmPost(BoardVO boardVO, MultipartFile file, RedirectAttributes redirect) {
+		boardService.updateFarmPost(boardVO);
+		redirect.addAttribute("boardNo", boardVO.getBoardNo());
+		return "redirect:/boardView";
+	}
+	
+	
 	@PostMapping("registerJjim")
 	public String registerJjim(@AuthenticationPrincipal MemberVO membervo, BoardVO bvo, String boardCategori,
 			Model model) {
@@ -239,6 +272,15 @@ public class BoardController {
 		jjimCheck = boardService.findJjim(jjimVO);
 		model.addAttribute("jjimCheck",jjimCheck);
 		return jjimCheck;
+	}
+	
+	//20220713 추가 농촌활동 게시물 삭제
+	@GetMapping("deleteFarmPost")
+	public String deleteFarmPost(String boardNo, Model model) {
+		boardService.deleteFarmPost(boardNo);
+		List<BoardVO> list = boardService.findBoardFarmingListByBoardCategori("농촌활동");
+		model.addAttribute("boardFarmingList",list);
+		return "board/boardFarmingList";
 	}
 
 }

@@ -30,6 +30,8 @@ public interface ReserveMapper {
 	//내가 예약한 게시물 번호 중복없이 조회
 	List<BoardVO> findReservationBoardNoDistinct(String id);
 
+	//게시물 예약 여부 (예약이 있는지 없는지 확인) 20220713 추가 
+	int checkReservationByBoardNo(String boardNo);
 
 	
 

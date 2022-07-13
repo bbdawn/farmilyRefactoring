@@ -32,4 +32,7 @@
 		where r.board_no = b.board_no
 		and r.id = #{id}
 	</select>
+	<select id="checkReservationByBoardNo" parameterType="string" resultType="int">
+		select count(*) from farmily_reservation where board_no = #{value} and id is not null
+	</select>
 </mapper>

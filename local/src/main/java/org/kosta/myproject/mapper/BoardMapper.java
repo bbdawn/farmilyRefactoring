@@ -40,7 +40,6 @@ public interface BoardMapper {
 	// 내가 찜한 게시물 조회
 	List<BoardVO> findMyJjimListById(String id);
 	
-	
 	//게시물 찜 여부
 	String findJjim(JjimVO jvo);
 	
@@ -52,9 +51,20 @@ public interface BoardMapper {
 
 	// 게시물 찜하기
 	void registerJjim(JjimVO jvo);
+	
 	//게시물 찜 취소하기
 	void deleteJjim(JjimVO jvo);
 	
 	// 조회수 업데이트하기
-		void updateCount(String boardNo);
+	void updateCount(String boardNo);
+
+	// 검색기능 (searchOption - 제목,내용,작성자) 20220713 추가 
+	List<BoardVO> findSearchBoardList(String searchOption, String searchContent);
+	
+	//농촌활동 게시물 업데이트 20220713 추가 
+	void updateFarmPost(BoardVO boardVO);
+	
+	//농촌활동 게시물 삭제 20220713 추가
+	void deleteFarmPost(String BoardNo);
+	
 }
