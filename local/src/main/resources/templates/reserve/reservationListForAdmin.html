@@ -10,7 +10,7 @@
 <div layout:fragment="main" style="height: 700px;">
 
 <br><br><br><br><br>
-	<h3><span th:text=${membervo.name}></span> 님 농촌활동 예약조회</h3><br>
+	<h3><span th:text=${membervo.name}></span> 관리자님 농촌활동 예약현황</h3><br>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
@@ -18,6 +18,7 @@
 				<th>활동지역</th>
 				<th>상세주소</th>
 				<th>예약날짜</th>
+				<th>예약아이디</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,13 +27,23 @@
 				<td th:text="${myReser.title}">예약글제목</td>
 				<td th:text="${myReser.region}">지역</td>
 				<td th:text="${myReser.detailRegion}">상세주소</td>
+				
 				<td>
-				<span th:each="myDate:${myReserList}">
+					<span th:each="myDate:${myReserList}">
 				<span th:if="${myReser.title}==${myDate.title}">
 					<span th:text="${myDate.reservationVO.reservationDate}"></span><br>
-				</span>
+					</span>
 				</span>
 				</td>
+				<td>
+					<span th:each="myDate:${myReserList}">
+					<span th:if="${myReser.title}==${myDate.title}">
+					<span th:text="${myDate.reservationVO.id}"></span><br>
+					</span>
+				</span>
+				</td>
+				
+				
 			</tr>
 		
 			

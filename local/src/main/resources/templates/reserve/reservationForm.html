@@ -49,32 +49,35 @@
 			<tr align="left">
 				<td style="font-size: 20px">
 				<span style="font-weight: bold; " th:text="${boardVO.title}"></span> <br>
+				<span th:text="${boardVO.content}"></span> <br>
+				<span style="font-weight: bold; "> 활동내용 : </span><span th:text="${boardVO.selectCategori}"></span><br>
 				<span style="font-weight: bold; "> 지역 : </span> <span th:text="${boardVO.region}"></span> <br>
 				<span style="font-weight: bold; "> 주소 : </span> <span th:text="${boardVO.detailRegion}"></span> <br>
-				<span style="font-weight: bold; "> 활동내용 : </span><span th:text="${boardVO.selectCategori}"></span><br>
-				
-					
 					<div id="chooseDate"></div>
 				</td>
 			</tr>
 			<tr align="left">
 				<td style="font-size: 20px">
-					<span style="font-weight: bold; "> 예약가능날짜 : </span><br>
+				<span style="font-weight: bold; "> 예약자 정보 </span><br>
+				<span style="font-weight: bold; "> 이름 : </span> <span th:text="| ${memberVO.name}|"></span> <br>
+				<span style="font-weight: bold; "> 연락처 : </span> <span th:text="| 0${memberVO.tel}|"></span> <br>
+				</td>
+			</tr>
+			<tr align="left">
+				<td style="font-size: 20px">
+					<span style="font-weight: bold; "> 예약가능날짜 : </span>
 					<th:block th:each="rdate:${rdateList}">
-					<input class="chkBox" type="checkbox" th:text="${rdate.reservationDate}" th:value="${rdate.reservationDate}" >
-					<span style="margin-left: 150px"></span>
-					<br>
+					<input class="chkBox" type="checkbox" th:text="| ${rdate.reservationDate}|" th:value="${rdate.reservationDate}" ><br>
+						<span style="margin-left: 133px"></span>
 					
 				</th:block>
 				</td>
 			</tr>
+			
 			<tr>
 				<td><img style="max-width: 850px" th:src="@{${boardVO.filepath}}" /></td>
 			</tr>
-			<tr>
-				<td><textarea rows="10" class="form-control" name="content"
-						placeholder="본문내용" required="required" th:text="${boardVO.content}" ></textarea></td>
-			</tr>
+			
 
 		</table>
 	

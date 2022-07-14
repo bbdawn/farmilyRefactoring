@@ -66,11 +66,12 @@ public class ReserveController {
 	}
 	
 	@GetMapping("reservationForm")
-	public String reservationForm(String boardNo, Model model) {
+	public String reservationForm(@AuthenticationPrincipal MemberVO membervo,String boardNo, Model model) {
 		List<ReservationVO> rdateList = reserveService.findReservateDate(boardNo);
 		BoardVO boardVO = boardService.boardView(boardNo);
 		model.addAttribute("rdateList",rdateList);
 		model.addAttribute("boardVO",boardVO);
+		model.addAttribute("memberVO", membervo); //20220714추가
 		return "reserve/reservationForm";
 	}
 	
@@ -100,4 +101,17 @@ public class ReserveController {
 		model.addAttribute("membervo",membervo);
 		return "reserve/reservationList";
 	}
+	
+	//관리자가 예약현황 조회하기 20220714 추가 
+	@RequestMapping("reservationListForAdmin")
+	public String reservationListForAdmin(@AuthenticationPrincipal MemberVO membervo, Model model) {
+		String id = membervo.getId();
+		List<BoardVO> reserList = reserveService.findReservationListForAdmin(id);
+		List<BoardVO> reserBoardNoList = reserveService.findReserBoardNoDistinctForAdmin(id);
+		model.addAttribute("myReserList",reserList);
+		model.addAttribute("myReserBoardNoList",reserBoardNoList);
+		model.addAttribute("membervo",membervo);
+		return "reserve/reservationListForAdmin";
+	}
+	
 }

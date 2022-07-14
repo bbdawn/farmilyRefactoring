@@ -3,6 +3,7 @@
 <mapper namespace="org.kosta.myproject.mapper.ReserveMapper">
 	<resultMap type="org.kosta.myproject.vo.BoardVO" id="reservationResultMap">
 		<result column="reservation_date" property="reservationVO.reservationDate"/>
+		<result column="id" property="reservationVO.id"/>
 		<result column="board_no" property="reservationVO.boardNo"/>
 	</resultMap>
 	<select id="findReservationListById" parameterType="String" resultMap="reservationResultMap">
@@ -10,6 +11,7 @@
 		from farmily_reservation r , farmily_board b
 		where b.board_no = r.board_no
 		and r.id = #{value}
+		order by reservation_date
 	</select>
 	<select id="findReservationBoardNo" parameterType="String" resultType="string">
 		select distinct board_no from farmily_reservation where id = #{value}
@@ -34,5 +36,19 @@
 	</select>
 	<select id="checkReservationByBoardNo" parameterType="string" resultType="int">
 		select count(*) from farmily_reservation where board_no = #{value} and id is not null
+	</select>
+	<select id="findReservationListForAdmin" parameterType="string" resultMap="reservationResultMap">
+		select r.reservation_date,r.id, r.board_no, b.board_no , b.title, b.content, b.select_categori,b.board_categori,b.region,b.detail_region
+		from farmily_reservation r , farmily_board b
+		where b.board_no = r.board_no
+		and r.id is not null
+		and b.id = #{value}
+		order by reservation_date
+	</select>
+	<select id="findReserBoardNoDistinctForAdmin" parameterType="String" resultMap="reservationResultMap">
+		select distinct b.board_no, b.title, b.region,b.detail_region
+		from farmily_reservation r , farmily_board b
+		where r.board_no = b.board_no
+		and b.id = #{value}
 	</select>
 </mapper>

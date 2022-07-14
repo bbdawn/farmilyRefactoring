@@ -54,6 +54,16 @@
                     <div class="social-icons">
                         <a class="social-icon" href="#findMyJjimListById" th:href="@{/mypage/findMyJjimListById}"><span class="material-symbols-outlined">favorite</span></a>찜한 목록 조회<br>
                     </div>
+                     <p class="lead mb-3"></p>
+                    <div class="social-icons">
+                        <a class="social-icon" href="#findMyPostListById" th:href="@{/reservationList}"><span class="material-symbols-outlined">R</span></a>농촌활동 예약 조회<br>
+                    </div>
+                    <th:block th:if="${authority=='ROLE_ADMIN'}">
+                     <p class="lead mb-3"></p>
+                    <div class="social-icons">
+                        <a class="social-icon" href="#findMyPostListById" th:href="@{/reservationListForAdmin}"><span class="material-symbols-outlined">C</span></a>농촌활동 예약 현황(관리자)<br>
+                    </div>
+                    </th:block>
                     <p class="lead mb-3"></p>
                     <div class="social-icons">
                         <a class="social-icon" href="#updateMember" th:href="@{/mypage/updateMemberForm}"><span class="material-symbols-outlined">build</span></a>회원정보 수정<br>

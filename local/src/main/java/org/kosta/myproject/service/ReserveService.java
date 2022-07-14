@@ -26,4 +26,11 @@ public interface ReserveService {
 	
 	//게시물 예약 여부 (예약이 있는지 없는지 확인)
 	int checkReservationByBoardNo(String boardNo);
+	
+	//농촌활동 관리자의 예약 현황 조회 20220714추가
+	List<BoardVO> findReservationListForAdmin(String id);
+	
+	//나(관리자)의 농촌활동 게시물 번호 중복없이 조회 20220714추가
+	List<BoardVO> findReserBoardNoDistinctForAdmin(String id);
+	
 }

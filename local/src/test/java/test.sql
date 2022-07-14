@@ -154,3 +154,23 @@ add CONSTRAINT fk_jjim_board_no foreign key(board_no) references farmily_board(b
 alter table farmily_reservation drop CONSTRAINT fk_reservation_board_no;
 ALTER TABLE farmily_reservation
 add CONSTRAINT fk_reservation_board_no foreign key(board_no) references farmily_board(board_no) ON DELETE CASCADE;
+
+-- 나(농활관리자)의 농촌활동에 예약한 회원 조회
+select r.reservation_date,r.id, r.board_no, b.board_no , b.title, b.content, b.select_categori,b.board_categori,b.region,b.detail_region
+from farmily_reservation r , farmily_board b
+where b.board_no = r.board_no
+and r.id is not null
+and b.id = 'ddww'
+order by reservation_date
+
+select r.reservation_date,r.id, r.board_no, b.board_no , b.title, b.content, b.select_categori,b.board_categori,b.region,b.detail_region
+from farmily_reservation r , farmily_board b
+where b.board_no = r.board_no
+and r.id is not null
+and b.id = 'ddww'
+order by reservation_date
+
+select distinct b.board_no, b.title, b.region,b.detail_region
+		from farmily_reservation r , farmily_board b
+		where r.board_no = b.board_no
+		and b.id = 'ddww'

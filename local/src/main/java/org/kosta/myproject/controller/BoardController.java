@@ -94,7 +94,7 @@ public class BoardController {
 		return boardService.findBoardListByRegion(region);
 	}
 	
-	//findSearchBoardList
+	//findSearchBoardList 20220713 추가
 	@GetMapping("guest/findSearchBoardList")
 	public String findSearchBoardList(String searchOption,String searchContent,Model model) {
 		List<BoardVO> list = boardService.findSearchBoardList(searchOption, searchContent);

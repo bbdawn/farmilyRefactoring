@@ -39,6 +39,15 @@ class FinalprojectFarmilyApplicationTests {
 		System.out.println(result);
 	}
 	
+	@Test
+	void adminCheckReservationList() {
+		String id = "ddww";
+		List<BoardVO> list = reserveMapper.findReservationListForAdmin(id);
+		for(BoardVO bvo : list) {
+			System.out.println(bvo);
+		}
+	}
+	
 
 
 }

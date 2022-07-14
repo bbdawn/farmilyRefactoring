@@ -69,9 +69,6 @@
 	<select id="findSearchBoardList" parameterType="string" resultType="org.kosta.myproject.vo.BoardVO">
 		<include refid="selectBoard"/> where ${searchOption} like '%'||#{searchContent}||'%'
 	</select>
-	<select id="findSearchBoardListByTitle" parameterType="string" resultType="org.kosta.myproject.vo.BoardVO">
-		<include refid="selectBoard"/> where title like '%'||#{searchContent}||'%'
-	</select>
 	<update id="updateFarmPost" parameterType="org.kosta.myproject.vo.BoardVO">
 		update farmily_board set title=#{title}, content=#{content}, region=#{region}, detail_region=#{detailRegion}, select_categori=#{selectCategori}
  		where board_no=#{boardNo}

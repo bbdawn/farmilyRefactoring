@@ -29,6 +29,8 @@ public class MyPageController {
 	
 	@RequestMapping("mypage")
 	public String mypage(@AuthenticationPrincipal MemberVO memberVO, Model model) {
+		String authority = memberService.findAuthorityById(memberVO.getId()); //20220714추가
+		model.addAttribute("authority", authority); //20220714추가
 		model.addAttribute("memberVO", memberVO);
 		return "mypage/mypageindex";
 	}
