@@ -114,8 +114,10 @@ $(function() {
 		if(count>0){
 			alert("활동에 대한 예약이 존재해 게시물을 삭제할 수 없습니다.");
 		}else{
-			alert("삭제되었습니다");
-			location.href="/deleteFarmPost?boardNo="+boardNo;
+			let result = confirm("게시물을 삭제하시겠습니까?");
+			if(result){			
+				location.href="/deleteFarmPost?boardNo="+boardNo;
+			}
 		}
 	});
 	

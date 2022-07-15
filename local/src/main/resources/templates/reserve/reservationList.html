@@ -8,8 +8,58 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <div layout:fragment="main" style="height: 700px;">
-
 <br><br><br><br><br>
+<script type="text/javascript" th:inline="javascript">
+$(function() {
+	let message = [[${message}]];
+	if(message!=null){
+		alert(message);
+	}
+	let cdate = new Set();
+	
+	//체크한 날짜 set배열에 담아 보낼땐 array로 변경
+	$('.chkBox').click(function() {
+		let thisVal = $(this).val();
+		if($(".chkBox").is(":checked")==true){
+			cdate.add(thisVal);				
+		}
+		if($(this).is(":checked")==false){
+			cdate.delete(thisVal);
+		}
+		var arr = Array.from(cdate);
+		$("#myCheckList").val(arr);
+	});
+	
+	/* //form submit 시 예약 날짜 체크박스 확인
+	$("#deleteForm").submit(function() {
+		if ($("input:checkbox[class='chkBox']").is(":checked")==false) {
+			alert("예약 취소 날짜를 선택해 주십시오.");
+			return false;
+		}
+		
+	}); */
+	$(".submitBtn").click(function() {
+		if ($("input:checkbox[class='chkBox']").is(":checked")==false) {
+			alert("예약 취소 날짜를 선택해 주십시오.");
+			return 
+		}
+		let result = confirm("선택한 예약을 취소하시겠습니까?");
+		if(result){
+			let valno = $(this).val();
+			$("#boardNo").val(valno);
+			$("#deleteForm").submit();
+			
+		}
+		
+		/* $("#boardNo").val($(this).val());
+		$("#deleteForm").submit(); */
+	});
+	
+});
+</script>
+	<form method="post" id="deleteForm"  th:action="deleteReservation" >
+	<input type="hidden" id="myCheckList" name="myCheckList" >
+	<input type="hidden" id="boardNo" name="boardNo" >
 	<h3><span th:text=${membervo.name}></span> 님 농촌활동 예약조회</h3><br>
 	<table class="table table-bordered">
 		<thead>
@@ -18,6 +68,7 @@
 				<th>활동지역</th>
 				<th>상세주소</th>
 				<th>예약날짜</th>
+				<th>예약취소</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,17 +78,22 @@
 				<td th:text="${myReser.region}">지역</td>
 				<td th:text="${myReser.detailRegion}">상세주소</td>
 				<td>
-				<span th:each="myDate:${myReserList}">
-				<span th:if="${myReser.title}==${myDate.title}">
-					<span th:text="${myDate.reservationVO.reservationDate}"></span><br>
-				</span>
-				</span>
+					<span th:each="myDate:${myReserList}">
+					<span th:if="${myReser.title}==${myDate.title}">
+						<input class="chkBox" type="checkbox" th:text="| ${myDate.reservationVO.reservationDate}|" th:value="${myDate.reservationVO.reservationDate}" ><br>
+					</span>
+					</span>
 				</td>
+				
+				<td>
+					<button class="submitBtn" th:value="${myReser.reservationVO.boardNo}" type="button" style="color: red">예약취소</button>
+				</td> 
 			</tr>
 		
 			
 		</tbody>
 	</table>
+	</form>
 	<br>
 </div>	
 </html>

@@ -51,4 +51,10 @@
 		where r.board_no = b.board_no
 		and b.id = #{value}
 	</select>
+	<update id="deleteReservation" parameterType="org.kosta.myproject.vo.ReservationVO">
+		update farmily_reservation set id = null where board_no = #{boardNo} and reservation_date = #{reservationDate}
+	</update>
+	<select id="findReservationDateByBoardNoAndId" parameterType="org.kosta.myproject.vo.ReservationVO" resultType="org.kosta.myproject.vo.ReservationVO">
+		select reservation_date ,id,board_no from farmily_reservation where id = #{id} and board_no = #{boardNo}
+	</select>
 </mapper>

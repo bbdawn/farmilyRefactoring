@@ -246,7 +246,6 @@ public class BoardController {
 		return "redirect:/boardView";
 	}
 	
-	
 	@PostMapping("registerJjim")
 	public String registerJjim(@AuthenticationPrincipal MemberVO membervo, BoardVO bvo, String boardCategori,
 			Model model) {
@@ -280,6 +279,7 @@ public class BoardController {
 		boardService.deleteFarmPost(boardNo);
 		List<BoardVO> list = boardService.findBoardFarmingListByBoardCategori("농촌활동");
 		model.addAttribute("boardFarmingList",list);
+		model.addAttribute("message","삭제되었습니다.");
 		return "board/boardFarmingList";
 	}
 

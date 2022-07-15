@@ -16,7 +16,8 @@
 				let thisVal = $(this).val();
 				if($(".chkBox").is(":checked")==true){
 					cdate.add(thisVal);				
-				}else{
+				}
+				if($(this).is(":checked")==false){
 					cdate.delete(thisVal);
 				}
 				var arr = Array.from(cdate);

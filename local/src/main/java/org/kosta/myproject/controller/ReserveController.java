@@ -114,4 +114,30 @@ public class ReserveController {
 		return "reserve/reservationListForAdmin";
 	}
 	
+	//예약취소 20220715추가
+	@RequestMapping("deleteReservation")
+	public String deleteReservation(@AuthenticationPrincipal MemberVO membervo, Model model,String boardNo, String[] myCheckList) {
+		String id = membervo.getId();
+		ReservationVO rvo = new ReservationVO();
+		rvo.setId(id);
+		rvo.setBoardNo(boardNo);
+		List<ReservationVO> myReserDateList = reserveService.findReservationDateByBoardNoAndId(rvo);
+		for(int i=0;i<myCheckList.length;i++) {
+			String date = myCheckList[i];
+			for(int j=0;j<myReserDateList.size();j++) {
+				if(myReserDateList.get(j).getReservationDate().contains(date)) {
+					rvo.setReservationDate(date);
+					reserveService.deleteReservation(rvo);
+					model.addAttribute("message","예약이 취소되었습니다.");
+				}
+			}
+		}
+		List<BoardVO> myReserList = reserveService.findReservationListById(id);
+		List<BoardVO> myReserBoardNoList = reserveService.findReservationBoardNoDistinct(id);
+		model.addAttribute("myReserList",myReserList);
+		model.addAttribute("myReserBoardNoList",myReserBoardNoList);
+		model.addAttribute("membervo",membervo);
+		return "reserve/reservationList";
+	}
+	
 }

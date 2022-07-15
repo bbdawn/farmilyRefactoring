@@ -170,7 +170,11 @@ and r.id is not null
 and b.id = 'ddww'
 order by reservation_date
 
-select distinct b.board_no, b.title, b.region,b.detail_region
-		from farmily_reservation r , farmily_board b
-		where r.board_no = b.board_no
-		and b.id = 'ddww'
+-- 예약취소 sql
+update farmily_reservation set id = null where board_no = 131 and reservation_date = '2022-07-24'
+
+
+-- 메시지 기능을 위한 테이블 생성
+		
+		
+	

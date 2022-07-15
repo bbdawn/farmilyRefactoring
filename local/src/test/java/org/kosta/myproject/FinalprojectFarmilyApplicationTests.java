@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.kosta.myproject.mapper.BoardMapper;
 import org.kosta.myproject.mapper.ReserveMapper;
 import org.kosta.myproject.vo.BoardVO;
+import org.kosta.myproject.vo.ReservationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -46,6 +47,15 @@ class FinalprojectFarmilyApplicationTests {
 		for(BoardVO bvo : list) {
 			System.out.println(bvo);
 		}
+	}
+	
+	@Test
+	void deleteReservation() {
+		ReservationVO rvo = new ReservationVO();
+		rvo.setBoardNo("136");
+		rvo.setReservationDate("2022-07-31");
+		reserveMapper.deleteReservation(rvo);
+		System.out.println("예약취소완료 ");
 	}
 	
 

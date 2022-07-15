@@ -39,5 +39,10 @@ public interface ReserveMapper {
 	//나(관리자)의 농촌활동 게시물 번호 중복없이 조회 20220714추가
 	List<BoardVO> findReserBoardNoDistinctForAdmin(String id);
 
-
+	//예약 취소하기 20220715추가
+	void deleteReservation(ReservationVO rvo);
+	
+	//농촌활동 게시물 각각의 예약 날짜 조회 20220715추가
+	List<ReservationVO> findReservationDateByBoardNoAndId(ReservationVO rvo);
+	
 }

@@ -52,6 +52,14 @@ public class ReserveServiceImpl implements ReserveService{
 	public List<BoardVO> findReserBoardNoDistinctForAdmin(String id) {
 		return reserveMapper.findReserBoardNoDistinctForAdmin(id);
 	}
+	@Override
+	public void deleteReservation(ReservationVO rvo) {
+		reserveMapper.deleteReservation(rvo);
+	}
+	@Override
+	public List<ReservationVO> findReservationDateByBoardNoAndId(ReservationVO rvo) {
+		return reserveMapper.findReservationDateByBoardNoAndId(rvo);
+	}
 	
 	
 	

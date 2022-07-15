@@ -18,12 +18,12 @@
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 </div>
-  <br><br><br><br>
+  <br>
     <div class="container" style="position: relative; left: -40px; top: 40px;">
                         <div class="img-item mx-auto">
                            
                                 <div class="img-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                            
+                             
                           <style>
 .list0 { clear:both; position: relative; z-index: 1; top: -35px; left: -5px; } 
 .list1 { clear:both; position: absolute; z-index: 1; top: 260px; left: 20px; }
@@ -131,8 +131,14 @@ function mus_off(musName) {
 </script>
 
 <!-- region list ajax 134-178 -->
-<script type="text/javascript">
+<script type="text/javascript"  th:inline="javascript">
 $(function() {
+	//게시글 삭제시 보내는 메세지가 있는 경우 
+	let message = [[${message}]];
+	if(message!=null){
+		alert(message);
+	}
+	
 	var $j = jQuery.noConflict();
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
@@ -178,6 +184,7 @@ $(function() {
 </script>
 
 <!-- region list ajax  div 부분 수정함 -->
+<div>
 <div style="clear:both; position: relative; z-index: 1; top: -35px; left: 25; ">
 <a class="region" id="전남" onfocus='this.blur()' onmouseover=mus_on('mus1') onmouseout=mus_off('mus1') ><img src='../assets/map/m061.gif' alt='' border='0' name='mus1' class='list1' ></a>
 <a class="region" id="전북" onfocus='this.blur()' onmouseover=mus_on('mus2') onmouseout=mus_off('mus2') ><img src='../assets/map/m063.gif' alt='' border='0' name='mus2' class='list2' ></a>
@@ -196,17 +203,17 @@ $(function() {
 <a class="region" id="울산" onfocus='this.blur()' onmouseover=mus_on('mus15') onmouseout=mus_off('mus15') ><img src='../assets/map/m052.gif' alt='' border='0' name='mus15' class='list15' ></a>
 <a class="region" id="부산" onfocus='this.blur()' onmouseover=mus_on('mus16') onmouseout=mus_off('mus16') ><img src='../assets/map/m051.gif' alt='' border='0' name='mus16' class='list16' ></a> 
 </div>
-						
+</div>				
                         </div>
-                    </div>
+                    </div> 
 
 <!-- region list ajax  조회수 추가함 -->
-    <div class="container" style="position: relative; left: 200px; top: 60px; width: 700px">
-    <div id="clickRegion"  style="font-size: 30px;font-weight: bold;"></div>
-    <table class="table table-bordered" style="position:right;" >
+    <div class="container" style="position: relative; left: 200px; top: 60px;">
+    <div id="clickRegion"  style="font-size: 30px;font-weight: bold;width: 80%"></div>
+    <table class="table table-bordered" style="position:right;width: 80%" >
     <thead>
       <tr>
-        <th>글번호</th>
+        <th>글번호</th> 
         <th>지역</th>
         <th>카테고리</th>
         <th>제목</th>
