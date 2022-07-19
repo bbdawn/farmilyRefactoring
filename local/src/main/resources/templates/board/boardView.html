@@ -25,7 +25,16 @@
 				<td><h1 th:text="${boardVO.title}"></h1></td>
 			</tr>
 			<tr>
-				<td align="right"><h6 th:text="|작성자 : ${boardVO.id}|"></h6><h6 th:text="|작성일 : ${boardVO.createdDate}|"></h6></td>
+				<td align="right">
+				<span style="font-weight: bold; "> 작성자 : 	</span>	
+			<a data-toggle="dropdown" href="#" th:text="${boardVO.id}|"></a>
+			 
+              <div class="dropdown-menu">
+              	<!-- <a class="dropdown-item" href="#" th:href="@{/sendMessageForm(receiver=${boardVO.id})}">메시지보내기</a> --> 
+                <a class="dropdown-item"  data-toggle="modal" data-target="#myModal">메시지보내기</a>
+              </div>
+				
+				<h6 th:text="|작성일 : ${boardVO.createdDate}|"></h6></td>
 			</tr>
 			
 			
@@ -65,8 +74,27 @@
 	</form>
 
 
+<!-- Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" th:text="|${boardVO.id} 님에게 메시지보내기|"></h5>
+    
+      </div>
+      <div class="modal-body">
+      	<textarea rows="10" class="form-control" id="content" name="content" placeholder="보낼 메시지를 입력하세요" required="required"></textarea>
+			<input type="hidden" name="receiver" th:value="${boardVO.id}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="modalSubmitBtn" data-dismiss="modal">보내기</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>	
 	
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
 $(function() {
 	let jjimCheck = [[${jjimCheck}]];
 	
@@ -102,6 +130,28 @@ $(function() {
 			}
 		});//ajax
 	});//click
+	
+
+	//modal 확인버튼 클릭시
+	$("#modalSubmitBtn").click(function() {
+		let receiver = [[${boardVO.id}]];
+		let content = $("#content").val();
+		
+		$.ajax({
+			type : "get",
+			url : "/sendMessage?receiver="+receiver+"&content="+content,
+			beforeSend : function(xhr)
+            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				xhr.setRequestHeader(header, token);
+            },
+			success : function(result){
+				$("#content").val("");
+				alert("메시지가 전송되었습니다.");
+			}
+		});//ajax
+		
+	});
+	
 });
 </script>	
 </div>

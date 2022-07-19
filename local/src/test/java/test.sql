@@ -175,6 +175,31 @@ update farmily_reservation set id = null where board_no = 131 and reservation_da
 
 
 -- 메시지 기능을 위한 테이블 생성
-		
-		
-	
+create table farmily_message(
+	message_no number primary key,
+	sender varchar2(100),
+	receiver varchar2(100),
+	content clob not null,
+	message_check number default 0,
+	sent_date date,
+	constraint fk_message_sender foreign key(sender) references farmily_member(id),
+	constraint fk_message_receiver foreign key(receiver) references farmily_member(id)
+)
+create sequence seq_farmily_message;
+
+insert into farmily_message(message_no,sender,receiver,content,sent_date) values(seq_farmily_message.nextval,'iiiu','ddww','hi',sysdate);
+insert into farmily_message(message_no,sender,receiver,content,sent_date) values(seq_farmily_message.nextval,'iiiu','ddww','예약관련문의드립니다.',sysdate);
+insert into farmily_message(message_no,sender,receiver,content,sent_date) values(seq_farmily_message.nextval,'ddww','iiiu','안녕하세요',sysdate);
+insert into farmily_message(message_no,sender,receiver,content,sent_date) values(seq_farmily_message.nextval,'ddww','zxcv','안녕하세요구매하고 싶어요',sysdate);
+
+select sender,receiver,content,sent_date,message_check from farmily_message where sender='ddww' or receiver='ddww'
+select sender,receiver,content,sent_date,message_check from farmily_message where sender='ddww' order by sent_date desc
+select distinct receiver,sender from farmily_message where sender='ddww'
+select distinct receiver,sender from farmily_message where receiver='ddww'
+select * from farmily_message where (sender='iiiu' and receiver='ddww') or (sender='ddww' and receiver='iiiu')
+
+select * from farmily_message where message_no = 1
+delete from farmily_message where sender='ddww' and receiver='iiiu'
+update farmily_message set message_check=1 where message_no = 1;
+select count(*) from farmily_message where message_check = 0 and receiver = 'ddww';
+

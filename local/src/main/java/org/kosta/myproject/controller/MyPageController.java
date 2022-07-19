@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kosta.myproject.service.MemberService;
+import org.kosta.myproject.service.MessageService;
 import org.kosta.myproject.service.MyPageService;
 import org.kosta.myproject.vo.MemberVO;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class MyPageController {
 	private final MyPageService mypageService;
 	private final MemberService memberService;
+	private final MessageService messageService;
 	private final BCryptPasswordEncoder passwordEncoder;
 	
 	@RequestMapping("mypage")
@@ -44,7 +46,7 @@ public class MyPageController {
 	@PostMapping("mypage/updateMember")
 	public String updateMember(@AuthenticationPrincipal MemberVO mvo, String memberPassword, String memberName, int memberTel, String memberRegion, String filename, String filepath, Model model, MultipartFile file) {
 		String encodedPwd = passwordEncoder.encode(memberPassword);
-		MemberVO memberVO = new MemberVO(mvo.getId(), encodedPwd, memberName, memberTel, memberRegion, 1, filename, filepath);
+		MemberVO memberVO = new MemberVO(mvo.getId(), encodedPwd, memberName, memberTel, memberRegion, 1, filename, filepath,messageService.countUncheckedMessage(mvo.getId()) );
 		mypageService.updateMember(memberVO);
 		
 		return "redirect:/mypage/updateResultView?id="+mvo.getId();

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/messageLayout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div layout:fragment="main" style="height: 700px;">
+	<br>
+	<br>
+	<br>
+	<br>
+	<table class="table table-bordered">
+		<tr align="left">
+			<th:block th:if="${messageVO.sender}==${memberVO.id}">
+					<h5>보낸메시지</h5>
+				<td>
+					<h6 th:text="|받는사람 : ${messageVO.receiver}|"></h6>
+					<h6 th:text="|보낸날짜 : ${messageVO.sentDate}|"></h6>
+				</td>	
+			</th:block>
+			<th:block th:unless="${messageVO.sender}==${memberVO.id}">
+					<h5>받은메시지</h5>
+				<td>
+					<h6 th:text="|보낸사람 : ${messageVO.sender}|"></h6>
+					<h6 th:text="|보낸날짜 : ${messageVO.sentDate}|"></h6>
+				</td>	
+			</th:block>
+		</tr>
+		<tr align="left" style="height: 350px">
+			<td>
+				<span th:text="${messageVO.content}"></span>
+			</td>
+		</tr>
+	</table>
+	
+	<br>
+	<button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/getMessageList}'|">목록으로</button>
+	
+	    
+</div>
+</html>

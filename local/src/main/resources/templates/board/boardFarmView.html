@@ -3,63 +3,9 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout}"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div layout:fragment="main" >
 
-	<br>
-	<br>
-	<br>
-	<br>
-	<form method="get" enctype="multipart/form-data">
-		<span th:name="boardCategori" th:text="${param.boardCategori}"></span>
-		
-		<table class="table">
-			<tr>
-				<td><h1 th:text="${boardVO.title}"></h1></td>
-			</tr>
-			<tr align="left">
-				<td style="font-size: 20px">
-				<span style="font-weight: bold; "> 지역 : </span> <span th:text="${boardVO.region}"></span> <br>
-				<span style="font-weight: bold; "> 주소 : </span> <span th:text="${boardVO.detailRegion}"></span> <br>
-				<span style="font-weight: bold; "> 활동내용 : </span><span th:text="${boardVO.selectCategori}"></span><br>
-				<span style="font-weight: bold; "> 예약가능날짜 : </span>
-				<th:block th:each="rdate:${rdateList}">
-						<span th:text="${rdate.reservationDate}"></span><br>
-						<span style="margin-left: 133px"></span>
-					</th:block>
-				</td>
-			</tr>
-			
-			<tr>
-				<td><img style="max-width: 850px" th:src="@{${boardVO.filepath}}" /></td>
-			</tr>
-			<tr>
-				<td><textarea rows="10" class="form-control" name="content"
-						placeholder="본문내용" required="required" th:text="${boardVO.content}" readonly="readonly"></textarea></td>
-			</tr>
-			<tr align="left">
-				<td id="jjimImg">
-					<img height="100" id="jjim" src="" />
-					
-				
-				</td>
-			</tr>
-		</table>
-	
-		<div class="text-center">
-			<input type="hidden" name="boardCategori"
-				value="${param.boardCategori}" th:value="${param.boardCategori}">
-			<div th:if = "${boardVO.id} != ${myId}">
-			<button id="reserveBtn" type="button" class="btn btn-outline-dark" sec:authorize="isAuthenticated()==true" >예약하기</button>
-			</div>
-			<br><br>
-			<div th:if = "${boardVO.id} == ${myId}">
-			<button type="button" class="btn btn-success" sec:authorize="isAuthenticated()==true" th:onclick="|location.href='@{/updateFarmPostForm(boardNo=${boardVO.boardNo})}'|">수정하기</button>
-			<button type="button" class="btn btn-light" id="deletePostBtn" sec:authorize="isAuthenticated()==true" >삭제하기</button>
-			</div>
-			
-		</div>
-	</form>
-<script type="text/javascript">
+<div layout:fragment="main" >
+<script type="text/javascript" th:inline="javascript" >
 $(function() {
 	let jjimCheck = [[${jjimCheck}]];
 	
@@ -121,8 +67,113 @@ $(function() {
 		}
 	});
 	
+	//modal 확인버튼 클릭시
+	$("#modalSubmitBtn").click(function() {
+		let receiver = [[${boardVO.id}]];
+		let content = $("#content").val();
+		
+		$.ajax({
+			type : "get",
+			url : "/sendMessage?receiver="+receiver+"&content="+content,
+			beforeSend : function(xhr)
+            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				xhr.setRequestHeader(header, token);
+            },
+			success : function(result){
+				$("#content").val("");
+				alert("메시지가 전송되었습니다.");
+			}
+		});//ajax
+		
+	});
+	
 });
-</script>		
+</script>	
+	<br>
+	<br>
+	<br>
+	<br>
+	<form method="get" enctype="multipart/form-data">
+		<span th:name="boardCategori" th:text="${param.boardCategori}"></span>
+		
+		<table class="table">
+			<tr>
+				<td><h1 th:text="${boardVO.title}"></h1></td>
+			</tr>
+			<tr align="left">
+				<td style="font-size: 20px;">
+					<span style="font-weight: bold; "> 작성자 : 	</span>	
+			<a data-toggle="dropdown" href="#" th:text="|${boardVO.id}|"></a>
+			 
+              <div class="dropdown-menu">
+              	<!-- <a class="dropdown-item" href="#" th:href="@{/sendMessageForm(receiver=${boardVO.id})}">메시지보내기</a> --> 
+                <a class="dropdown-item"  data-toggle="modal" data-target="#myModal">메시지보내기</a>
+              </div>
+				</td>
+			</tr>
+			<tr align="left">
+				<td style="font-size: 20px">
+				<span style="font-weight: bold; "> 지역 : </span> <span th:text="${boardVO.region}"></span> <br>
+				<span style="font-weight: bold; "> 주소 : </span> <span th:text="${boardVO.detailRegion}"></span> <br>
+				<span style="font-weight: bold; "> 활동내용 : </span><span th:text="${boardVO.selectCategori}"></span><br>
+				<span style="font-weight: bold; "> 예약가능날짜 : </span>
+				<th:block th:each="rdate:${rdateList}">
+						<span th:text="${rdate.reservationDate}"></span><br>
+						<span style="margin-left: 133px"></span>
+					</th:block>
+				</td>
+			</tr>
+			
+			<tr>
+				<td><img style="max-width: 850px" th:src="@{${boardVO.filepath}}" /></td>
+			</tr>
+			<tr>
+				<td><textarea rows="10" class="form-control" name="content"
+						placeholder="본문내용" required="required" th:text="${boardVO.content}" readonly="readonly"></textarea></td>
+			</tr>
+			<tr align="left">
+				<td id="jjimImg">
+					<img height="100" id="jjim" src="" />
+					
+				
+				</td>
+			</tr>
+		</table>
+	
+		<div class="text-center">
+			<input type="hidden" name="boardCategori"
+				value="${param.boardCategori}" th:value="${param.boardCategori}">
+			<div th:if = "${boardVO.id} != ${myId}">
+			<button id="reserveBtn" type="button" class="btn btn-outline-dark" sec:authorize="isAuthenticated()==true" >예약하기</button>
+			</div>
+			<br><br>
+			<div th:if = "${boardVO.id} == ${myId}">
+			<button type="button" class="btn btn-success" sec:authorize="isAuthenticated()==true" th:onclick="|location.href='@{/updateFarmPostForm(boardNo=${boardVO.boardNo})}'|">수정하기</button>
+			<button type="button" class="btn btn-light" id="deletePostBtn" sec:authorize="isAuthenticated()==true" >삭제하기</button>
+			</div>
+			
+		</div>
+	</form>
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" th:text="|${boardVO.id} 님에게 메시지보내기|"></h5>
+    
+      </div>
+      <div class="modal-body">
+      	<textarea rows="10" class="form-control" id="content" name="content" placeholder="보낼 메시지를 입력하세요" required="required"></textarea>
+			<input type="hidden" name="receiver" th:value="${boardVO.id}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="modalSubmitBtn" data-dismiss="modal">보내기</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>	
 	
 	
 </div>	

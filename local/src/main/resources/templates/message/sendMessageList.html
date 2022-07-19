@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/messageLayout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div layout:fragment="main" style="height: 700px;">
+	<br>
+	<br>
+	<br>
+	<br>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th style="width: 15%">받는사람</th>
+				<th >내용</th>
+				<th style="width: 25%">날짜</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr th:each="message:${sendMessageList}">
+			<!-- <td th:text="${message.messageNo}">메시지번호</td> -->
+				<td th:text="${message.receiver}">받는사람</td>
+				<td><a th:text="${message.content}"
+					th:href="@{/messageDetail(messageNo=${message.messageNo})}"></a></td>
+				<td th:text="${message.sentDate}">날짜</td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	
+	
+	    
+</div>
+</html>

@@ -17,4 +17,6 @@ public class MemberVO {
 	private String filename;
 	private String filepath;
 	
+	private int countUncheckedMessage;
+	
 }

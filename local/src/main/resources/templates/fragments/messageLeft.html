@@ -1,0 +1,23 @@
+<!-- 목차 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div  th:fragment="leftFragment" id="messageleft"	class="col-sm-2 sidenav text-left">
+<br><br><br>
+<div class="container">
+      <div class="row" >
+        <div class="col" >
+          <ul class="nav flex-column" style="text-align:center;" >
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/getMessageList}" style="color: black;font-size: 0.6cm;text-align: left;">받은메시지</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/sendMessageList}" style="color: black;font-size: 0.6cm;text-align: left;">보낸메시지</a>
+            </li>
+            
+           </ul>
+          </div>
+         </div>
+        </div>
+       </div>
+       
+</html>
