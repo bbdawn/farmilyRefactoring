@@ -41,7 +41,6 @@ public class CommentController {
 	
 	@RequestMapping("deleteComment")
 	public String deleteComment(int commentNo, String boardNo, Model model) {
-		System.out.println(commentNo);
 		commentService.deleteComment(commentNo);
 		List<CommentVO> commentList = commentService.findCommentByBoardNo(boardNo);
 		model.addAttribute("commentList", commentList);

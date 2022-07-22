@@ -25,4 +25,7 @@
 	<select id="countUncheckedMessage" parameterType="string" resultType="int">
 		select count(*) from farmily_message where message_check = 0 and receiver = #{value}
 	</select>
+	<delete id="deleteMessage" parameterType="string">
+		delete from farmily_message where message_no = #{value}
+	</delete>
 </mapper>

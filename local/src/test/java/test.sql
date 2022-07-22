@@ -195,13 +195,15 @@ insert into farmily_message(message_no,sender,receiver,content,sent_date) values
 select sender,receiver,content,sent_date,message_check from farmily_message where sender='ddww' or receiver='ddww'
 select sender,receiver,content,sent_date,message_check from farmily_message where sender='ddww' order by sent_date desc
 select distinct receiver,sender from farmily_message where sender='ddww'
-select distinct receiver,sender from farmily_message where receiver='ddww'
+select distinct receiver,sender from farmily_message where receiver='iiiu'
 select * from farmily_message where (sender='iiiu' and receiver='ddww') or (sender='ddww' and receiver='iiiu')
+select * from farmily_message where receiver='iiiu'
 
 select * from farmily_message where message_no = 1
 delete from farmily_message where sender='ddww' and receiver='qwert'
 update farmily_message set message_check=1 where message_no = 1;
 select count(*) from farmily_message where message_check = 0 and receiver = 'ddww';
+delete from farmily_message where message_no = 54
 
 -- 댓글 테이블 생성 (aws에도 생성완료)
 create table farmily_comment(
@@ -221,3 +223,5 @@ insert into farmily_comment(comment_no,comment_date,board_no,id,comment_content)
 delete from farmily_comment where comment_no = 2
 update farmily_comment set comment_content = '댓글수정테스트' where comment_no = 3
 select comment_no,comment_date,board_no,id,comment_content from farmily_comment where comment_no = 3
+
+

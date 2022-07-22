@@ -105,7 +105,7 @@ $(function() {
 			success : function(result){
 				$("#commentContent").val("");
 				$("#commentTable").replaceWith(result);
-				
+				location.reload();		
 			}
 		});//ajax
 	});
@@ -115,7 +115,6 @@ $(function() {
 		let commentNo = $(this).val();
 		let commentContent = $("#comment"+commentNo).val();
 		//alert(commentContent);
-		alert(commentNo);
 		$.ajax({
 			type : "get",
 			url : "/updateComment?commentNo="+commentNo+"&commentContent="+commentContent+"&boardNo="+boardNo,
@@ -135,7 +134,6 @@ $(function() {
 	$(".deleteCommentBtn").click(function() {
 		let boardNo = [[${boardVO.boardNo}]];
 		let commentNo = $(this).val();
-		alert(commentNo);
 		let result = confirm("댓글을 삭제하시겠습니까?");
 		if(result){			
 			$.ajax({
@@ -208,7 +206,7 @@ $(function() {
 			</tr>
 			<tr>
 				<td align="left">
-					<span style="font-weight: bold;font-size: 20px "> 댓글 </span><br>
+					<span style="font-weight: bold;font-size: 20px "> 댓글 </span><br><br>
 					<div id="commentTable">
 					<th:block th:if="${commentList!=null}">
 					<th:block id="commentList" th:each ="comment:${commentList}">

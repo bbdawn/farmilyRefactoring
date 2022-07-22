@@ -29,5 +29,7 @@ public interface MessageMapper {
 	//미확인 메시지가 있는지 조회
 	int countUncheckedMessage(String id);
 	
+	//메시지 삭제
+	void deleteMessage(String messageNo);
 
 }

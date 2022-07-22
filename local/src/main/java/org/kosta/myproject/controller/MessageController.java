@@ -2,6 +2,8 @@ package org.kosta.myproject.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kosta.myproject.service.MessageService;
 import org.kosta.myproject.vo.MemberVO;
 import org.kosta.myproject.vo.MessageVO;
@@ -55,6 +57,17 @@ public class MessageController {
 		mvo.setContent(content);
 		messageService.sendMessage(mvo);
 		return "메시지가 전송되었습니다";
+	}
+	
+	@RequestMapping("deleteMessage")
+	public String deleteMessage(@AuthenticationPrincipal MemberVO membervo,String[] arr,HttpServletRequest request,Model model) {
+		for(int i=0;i<arr.length;i++) {
+			messageService.deleteMessage(arr[i]);			
+		}
+		String id = membervo.getId();
+		List<MessageVO> list = messageService.getMessageList(id);
+		model.addAttribute("getMessageList", list);
+		return "message/getMessageList :: #messageTbody";
 	}
 	
 }

@@ -5,13 +5,68 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div layout:fragment="main" style="height: 700px;">
+<script type="text/javascript"  th:inline="javascript">
+$(function() {
+	
+	let deleteMessage = new Set();
+	var $j = jQuery.noConflict();
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+	
+	//체크한 날짜 set배열에 담아 보낼땐 array로 변경
+	$('.messageCheckBox').click(function() {
+		let thisVal = $(this).val();
+		if($(".messageCheckBox").is(":checked")==true){
+			deleteMessage.add(thisVal);				
+		}
+		if($(this).is(":messageCheckBox")==false){
+			deleteMessage.delete(thisVal);
+		}
+		
+		
+	});
+	
+	//메시지삭제버튼 클릭시
+	$("#deleteMessageBtn").click(function() {
+		var arr = Array.from(deleteMessage);
+		if ($("input:checkbox[class='messageCheckBox']").is(":checked")==false) {
+			alert("삭제할 메시지를 선택해주세요.");
+			return 
+		}
+		let result = confirm("선택한 메시지를 삭제하시겠습니까?");
+		if(result){
+
+			$.ajax({
+				type : "get",
+				traditional : true,
+				data : {arr:arr},
+				url : "/deleteMessage",
+				beforeSend : function(xhr)
+	            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+					xhr.setRequestHeader(header, token);
+	            },
+				success : function(result){
+					alert("삭제되었습니다.");
+					location.reload();
+				}
+			});//ajax
+			
+		}
+		
+	});
+	
+});
+
+</script>
 	<br>
 	<br>
 	<br>
-	<br>
+	<h2>보낸메시지함</h2>
+	<button class="btn btn-outline-danger btn-sm" id="deleteMessageBtn" type="button" style="float: left;">메시지삭제</button><br><br>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
+				<th></th>
 				<th style="width: 15%">받는사람</th>
 				<th >내용</th>
 				<th style="width: 25%">날짜</th>
@@ -21,6 +76,7 @@
 
 			<tr th:each="message:${sendMessageList}">
 			<!-- <td th:text="${message.messageNo}">메시지번호</td> -->
+				<td><input type="checkbox" class="messageCheckBox" th:value="${message.messageNo}"></td>
 				<td th:text="${message.receiver}">받는사람</td>
 				<td><a th:text="${message.content}"
 					th:href="@{/messageDetail(messageNo=${message.messageNo})}"></a></td>

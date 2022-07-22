@@ -50,6 +50,11 @@ public class MessageServiceImpl implements MessageService{
 		return messageMapper.countUncheckedMessage(id);
 	}
 
+	@Override
+	public void deleteMessage(String messageNo) {
+		messageMapper.deleteMessage(messageNo);
+	}
+
 	
 
 }
