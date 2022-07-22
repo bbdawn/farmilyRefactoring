@@ -5,6 +5,53 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div layout:fragment="main" style="height: 700px;">
+<script type="text/javascript" th:inline="javascript">
+	$(function() {
+		var $j = jQuery.noConflict();
+		let token = $("meta[name='_csrf']").attr("content");
+		let header = $("meta[name='_csrf_header']").attr("content");
+		
+		//modal 확인버튼 클릭시
+		$("#modalSubmitBtn").click(function() {
+			let receiver = [[${messageVO.sender}]];
+			let content = $("#content").val();
+			
+			$.ajax({
+				type : "get",
+				url : "/sendMessage?receiver="+receiver+"&content="+content,
+				beforeSend : function(xhr)
+	            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+					xhr.setRequestHeader(header, token);
+	            },
+				success : function(result){
+					$("#content").val("");
+					alert("메시지가 전송되었습니다.");
+				}
+			});//ajax
+			
+		});
+	});
+</script>
+	
+<!-- Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" th:text="|${messageVO.sender} 님에게 메시지보내기|"></h5>
+    
+      </div>
+      <div class="modal-body">
+      	<textarea rows="10" class="form-control" id="content" name="content" placeholder="보낼 메시지를 입력하세요" required="required"></textarea>
+			<input type="hidden" name="receiver" th:value="${messageVO.sender}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="modalSubmitBtn" data-dismiss="modal">보내기</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>	
 	<br>
 	<br>
 	<br>
@@ -34,8 +81,12 @@
 	</table>
 	
 	<br>
-	<button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/getMessageList}'|">목록으로</button>
 	
-	    
+	<button type="button" class="btn btn-light" th:onclick="|location.href='@{/getMessageList}'|">목록으로</button>
+	<th:block th:if="${messageVO.sender}!=${memberVO.id}">
+		<a class="btn btn-secondary"  data-toggle="modal" data-target="#myModal">답장하기</a><br>
+	</th:block>
 </div>
+
+
 </html>

@@ -52,7 +52,40 @@
 				
 				</td>
 			</tr>
-			
+			<tr>
+				<td align="left">
+					<span style="font-weight: bold;font-size: 20px "> 댓글 </span><br>
+					<div id="commentTable">
+					<th:block th:if="${commentList!=null}">
+					<th:block id="commentList" th:each ="comment:${commentList}">
+					<input type="hidden" class="commentNo" th:value="${comment.commentNo}">
+					<div class="input-group mb-3">
+					<!-- 댓글리스트 받아서 th:if댓글리스트가 null이 아닐 때 th:each문으로 출력 -->
+					  <span th:text=${comment.id} class="input-group-text" id="basic-addon1">댓글작성자id</span>
+					  <th:block th:if="${comment.id}!=${session.memberVO.id}"> 
+					 		 <input type="text" th:value="${comment.commentContent}" class="form-control" readonly="readonly" aria-label="Username" aria-describedby="basic-addon1">
+					 		
+					  </th:block>
+					  <th:block th:unless="${comment.id}!=${session.memberVO.id}"> <!-- 내가 쓴 댓글에만 수정 삭제 버튼 보이도록 & 수정가능 -->
+					 	<!-- <th:block th:if="${comment.id}==${session.memberVO.id}"> -->
+					 	<input type="text" th:value="${comment.commentContent}" th:id="|comment${comment.commentNo}|" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+							<button class="btn btn-outline-secondary updateCommentBtn" th:id="|update${comment.commentNo}|" th:value="${comment.commentNo}" type="button">수정</button>
+  					  		<button class="btn btn-outline-secondary deleteCommentBtn" th:id="|delete${comment.commentNo}|" type="button" th:value="${comment.commentNo}">삭제</button>
+  					 	</th:block> <!-- -->
+					</div>
+					</th:block>
+					</th:block> 
+					</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+					<div class="input-group mb-3">
+					  <input type="text" class="form-control" required="required" placeholder="댓글을 작성해주세요." id="commentContent" name="commentContent" aria-label="Recipient's username" aria-describedby="button-addon2">
+					  <button class="btn btn-outline-secondary" type="button" id="commentBtn" >등록</button>
+					</div>
+				</td>
+			</tr>
 		</table>
 		<!--
 		<div style='width:30px;float: left;'>
@@ -149,7 +182,66 @@ $(function() {
 				alert("메시지가 전송되었습니다.");
 			}
 		});//ajax
-		
+	});
+	
+	//댓글등록버튼 클릭시
+	$("#commentBtn").click(function() {
+		let boardNo = [[${boardVO.boardNo}]];
+		let commentContent = $("#commentContent").val();
+		if(commentContent==""){
+			alert("댓글을 작성해주세요.");
+			return;
+		}
+		$.ajax({
+			type : "get",
+			url : "/registerComment?boardNo="+boardNo+"&commentContent="+commentContent,
+			beforeSend : function(xhr)
+            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				xhr.setRequestHeader(header, token);
+            },
+			success : function(result){
+				$("#commentContent").val("");
+				$("#commentTable").replaceWith(result);
+				
+			}
+		});//ajax
+	});
+	
+	$(".updateCommentBtn").click(function() {
+		let boardNo = [[${boardVO.boardNo}]];
+		let commentNo = $(this).val();
+		let commentContent = $("#comment"+commentNo).val();
+		$.ajax({
+			type : "get",
+			url : "/updateComment?commentNo="+commentNo+"&commentContent="+commentContent+"&boardNo="+boardNo,
+			beforeSend : function(xhr)
+            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				xhr.setRequestHeader(header, token);
+            },
+			success : function(result){
+				alert("수정되었습니다.");
+			}
+		});//ajax
+	});
+	
+	$(".deleteCommentBtn").click(function() {
+		let boardNo = [[${boardVO.boardNo}]];
+		let commentNo = $(this).val();
+		let result = confirm("댓글을 삭제하시겠습니까?");
+		if(result){			
+			$.ajax({
+				type : "get",
+				url : "/deleteComment?commentNo="+commentNo+"&boardNo="+boardNo,
+				beforeSend : function(xhr)
+	            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+					xhr.setRequestHeader(header, token);
+	            },
+				success : function(result){
+					alert("댓글 삭제완료");
+					location.reload();		
+				}
+			});//ajax
+		}
 	});
 	
 });

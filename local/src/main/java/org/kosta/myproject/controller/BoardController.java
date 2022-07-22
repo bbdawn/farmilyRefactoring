@@ -6,9 +6,11 @@ import java.util.UUID;
 
 import org.kosta.myproject.mapper.BoardMapper;
 import org.kosta.myproject.service.BoardService;
+import org.kosta.myproject.service.CommentService;
 import org.kosta.myproject.service.MemberService;
 import org.kosta.myproject.service.ReserveService;
 import org.kosta.myproject.vo.BoardVO;
+import org.kosta.myproject.vo.CommentVO;
 import org.kosta.myproject.vo.JjimVO;
 import org.kosta.myproject.vo.MemberVO;
 import org.kosta.myproject.vo.Pagination;
@@ -33,6 +35,7 @@ public class BoardController {
 	private final MemberService memberService;
 
 	private final BoardMapper BoardMapper;
+	private final CommentService commentService;
 	
 	public int getTotalPostCount() {
 		return BoardMapper.getTotalPostCount();
@@ -168,6 +171,8 @@ public class BoardController {
 		jjimVO.setId(membervo.getId());
 		String jjimCheck = boardService.findJjim(jjimVO);
 		model.addAttribute("jjimCheck",jjimCheck);
+		List<CommentVO> commentList = commentService.findCommentByBoardNo(boardNo);
+		model.addAttribute("commentList",commentList);
 		//농촌활동 뷰페이지 다름
 		if(boardVO.getBoardCategori().equals("농촌활동")) {
 			//예약 가능 날짜 불러와서 보내주기

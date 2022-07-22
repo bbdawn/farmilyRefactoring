@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.kosta.myproject.mapper.BoardMapper;
+import org.kosta.myproject.mapper.CommentMapper;
 import org.kosta.myproject.mapper.MessageMapper;
 import org.kosta.myproject.mapper.ReserveMapper;
 import org.kosta.myproject.vo.BoardVO;
+import org.kosta.myproject.vo.CommentVO;
 import org.kosta.myproject.vo.MessageVO;
 import org.kosta.myproject.vo.ReservationVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ class FinalprojectFarmilyApplicationTests {
 	
 	@Autowired
 	MessageMapper messageMapper;
+	
+	@Autowired
+	CommentMapper commentMapper;
 
 	@Test
 	void contextLoads() {
@@ -115,6 +120,41 @@ class FinalprojectFarmilyApplicationTests {
 		String messageNo = "1";
 		messageMapper.updateCheckMessage(messageNo);
 		System.out.println("업데이트완료");
+	}
+	
+	@Test
+	void findCommentByBoardNo(){
+		String boardNo = "145";
+		List<CommentVO> list = commentMapper.findCommentByBoardNo(boardNo);
+		for(CommentVO cvo : list) {
+			System.out.println(cvo);
+		}
+	}
+	
+	@Test
+	void registerComment() {
+		CommentVO cvo = new CommentVO();
+		cvo.setBoardNo("145");
+		cvo.setId("ddww");
+		cvo.setCommentContent("댓글테스트!");
+		commentMapper.registerComment(cvo);
+		System.out.println("댓글등록완료");
+	}
+	
+	@Test
+	void deleteComment() {
+		int commentNo = 2;
+		commentMapper.deleteComment(commentNo);
+		System.out.println("댓글삭제완료");
+	}
+	
+	@Test
+	void updateComment() {
+		CommentVO cvo = new CommentVO();
+		cvo.setCommentNo(3);
+		cvo.setCommentContent("test댓글수정");
+		commentMapper.updateComment(cvo);
+		System.out.println("댓글수정완료");
 	}
 	
 

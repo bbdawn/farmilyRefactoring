@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.myproject.mapper.CommentMapper">
+	<select id="findCommentByBoardNo" parameterType="string" resultType="org.kosta.myproject.vo.CommentVO">
+		select comment_no,comment_date,board_no,id,comment_content from farmily_comment where board_no = #{value} order by comment_no
+	</select>
+	<insert id="registerComment" parameterType="org.kosta.myproject.vo.CommentVO">
+		insert into farmily_comment(comment_no,comment_date,board_no,id,comment_content) values(seq_farmily_comment.nextval,sysdate,#{boardNo},#{id},#{commentContent})
+	</insert>
+	<delete id="deleteComment" parameterType="int">
+		delete from farmily_comment where comment_no = #{value} 
+	</delete>
+	<update id="updateComment" parameterType="org.kosta.myproject.vo.CommentVO">
+		update farmily_comment set comment_content = #{commentContent} where comment_no = #{commentNo}
+	</update>
+	<select id="findCommentByCommentNo" parameterType="string" resultType="org.kosta.myproject.vo.CommentVO">
+		select comment_no,comment_date,board_no,id,comment_content from farmily_comment where comment_no = #{value}
+	</select>
+</mapper>
